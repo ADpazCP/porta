@@ -1,6 +1,6 @@
 {
   "name": "Portaria Digital Auri",
-  "short_name": "Auri Paz",
+  "short_name": "Credencial Adpaz",
   "description": "Sistema de Credenciamento Portaria Digital Auri Autopeças",
   "start_url": "./index.html",
   "display": "standalone",
