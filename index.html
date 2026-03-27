@@ -1,283 +1,284 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Credencial Adpaz</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Credencial Adpaz</title>
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#004080">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="logo-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#004080">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="logo-icon.png">
 
-<style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #e9ecef;
-    text-align: center;
-    padding: 15px;
-    margin: 0;
-  }
+    <style>
+        :root {
+            --azul-escuro: #003366;
+            --azul-primario: #004080;
+            --cinza-texto: #455a64;
+            --bg-site: #e9ecef;
+        }
 
-  .box {
-    background: white;
-    padding: 25px;
-    margin: 20px auto;
-    max-width: 380px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-site);
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-  .logo-topo { width: 160px; height: auto; margin-bottom: 20px; }
+        .box {
+            background: white;
+            padding: 20px;
+            margin: 15px auto;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
 
-  .password-container {
-    position: relative;
-    width: 100%;
-  }
+        .logo-topo { width: 140px; height: auto; margin-bottom: 15px; }
 
-  .password-container input {
-    padding-right: 45px;
-  }
+        /* Estilo do Formulário */
+        .password-container { position: relative; width: 100%; }
+        input, button {
+            padding: 14px;
+            width: 100%;
+            margin: 8px 0;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+            outline: none;
+        }
+        input:focus { border-color: var(--azul-escuro); box-shadow: 0 0 5px rgba(0, 51, 102, 0.2); }
+        
+        button#btnBuscar {
+            background-color: var(--azul-primario);
+            border: none;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+        button#btnBuscar:hover { background-color: #00264d; }
 
-  .toggle-password {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 20px;
-    user-select: none;
-    color: #546e7a;
-  }
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 20px;
+            color: #546e7a;
+        }
 
-  input, button {
-    padding: 14px;
-    width: 100%;
-    margin: 10px 0;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    font-size: 16px;
-    outline: none;
-  }
+        /* Design da Credencial */
+        .credencial {
+            margin-top: 5px;
+            padding: 25px 15px;
+            border-radius: 25px;
+            background: #fff;
+            border: 4px solid var(--azul-escuro);
+            box-shadow: 0 15px 40px rgba(0, 51, 102, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
 
-  input:focus {
-    border-color: #003366;
-    box-shadow: 0 0 5px rgba(0, 51, 102, 0.2);
-  }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            opacity: 0.06;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-  button {
-    background-color: #004080; 
-    border: none;
-    font-weight: bold;
-    color: white;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
+        .foto-container { position: relative; z-index: 1; margin-bottom: 10px; }
+        .foto {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--azul-escuro);
+            background: white;
+        }
 
-  button:hover {
-    background-color: #00264d;
-  }
+        .nome-funcionario {
+            margin: 10px 0 2px 0;
+            color: #001a33;
+            font-size: 22px;
+            text-transform: uppercase;
+            font-weight: 800;
+            line-height: 1.2;
+        }
 
-  .credencial {
-    margin-top: 5px;
-    padding: 30px 20px 45px 20px;
-    border-radius: 25px;
-    background: #fff;
-    border: 4px solid #003366; 
-    box-shadow: 0 15px 40px rgba(0, 51, 102, 0.2);
-    position: relative;
-    overflow: hidden;
-  }
+        .cargo-funcionario {
+            color: var(--cinza-texto);
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
 
-  .watermark {
-    position: absolute;
-    top: 110px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 250px;
-    opacity: 0.08;
-    z-index: 0;
-    pointer-events: none;
-  }
+        .id-numero {
+            font-size: 18px;
+            color: var(--azul-escuro);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            font-weight: bold;
+            background-color: #f0f4f8;
+            padding: 5px 15px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
 
-  .foto-container {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 10px;
-  }
+        .logo-meio { width: 55px; margin: 10px auto 5px auto; display: block; }
+        .loja-nome { font-size: 17px; color: #001a33; font-weight: 600; margin: 0; text-transform: uppercase; }
 
-  .foto {
-    width: 170px;
-    height: 170px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #003366;
-    background: white;
-  }
+        .validade-discreta {
+            margin: 15px 0 10px 0;
+            font-size: 11px;
+            color: #b71c1c;
+            font-weight: bold;
+        }
 
-  .nome-funcionario {
-    margin: 10px 0 0 0;
-    color: #001a33; 
-    font-size: 24px;
-    text-transform: uppercase;
-    font-weight: 800;
-  }
+        /* Rodapé Institucional */
+        .rodape-credencial {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+            font-size: 10px;
+            color: #37474f;
+            line-height: 1.5;
+            text-align: center;
+        }
 
-  .cargo-funcionario {
-    color: #455a64;
-    font-weight: bold;
-    font-size: 16px;
-    margin: -2px 0 10px 0;
-  }
+        .rodape-destaque {
+            font-weight: 800;
+            color: var(--azul-escuro);
+            display: block;
+            margin-bottom: 3px;
+            font-size: 11px;
+        }
 
-  .id-numero {
-    font-size: 19px;
-    color: #003366;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 2px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    background-color: #f0f4f8; 
-    padding: 6px 18px;
-    border-radius: 8px;
-    display: inline-block;
-  }
-
-  .logo-meio {
-    width: 64px;
-    height: 47px;
-    margin: 15px auto 5px auto;
-    display: block;
-  }
-
-  .loja-nome {
-    font-size: 19px;
-    color: #001a33;
-    text-transform: capitalize;
-    font-weight: normal;
-    margin: 0;
-  }
-
-  .validade-discreta {
-    position: absolute;
-    bottom: 12px;
-    right: 18px;
-    font-size: 10px;
-    color: #78909c;
-    font-weight: 600;
-  }
-
-  .btn-voltar {
-    margin-top: 25px;
-    background: #263238;
-    color: white;
-    font-size: 12px;
-    width: auto;
-    padding: 8px 20px;
-  }
-
-  .hidden { display: none !important; }
-  .erro { color: #b71c1c; font-weight: bold; margin-top: 10px; }
-</style>
+        .hidden { display: none !important; }
+        .erro { color: #b71c1c; font-weight: bold; margin-top: 10px; font-size: 14px; }
+    </style>
 </head>
 <body>
 
 <div class="box" id="mainBox">
-  <div id="formArea">
-    <img src="auripaz.png" class="logo-topo" alt="Auri Autopeças" onerror="this.src='https://via.placeholder.com/150x50?text=Auri'">
-    <h3>Credencial Adpaz</h3>
-    <input type="tel" id="cpf" placeholder="Digite seu CPF">
-    <div class="password-container">
-      <input type="password" id="nascimento" placeholder="Digite a Senha" 
-             inputmode="numeric" 
-             readonly 
-             onfocus="this.removeAttribute('readonly');"
-             autocomplete="new-password" 
-             name="campo_aleatorio_auri"
-             spellcheck="false">
-      <span class="toggle-password" id="eyeIcon" onclick="togglePass()">🙈</span>
+    <div id="formArea">
+        <img src="auripaz.png" class="logo-topo" alt="Adpaz" onerror="this.src='https://via.placeholder.com/150x50?text=ADPAZ'">
+        <h3 style="color: #003366; margin-top: 0;">Portal do Colaborador</h3>
+        
+        <input type="tel" id="cpf" placeholder="CPF (somente números)" maxlength="11">
+        
+        <div class="password-container">
+            <input type="password" id="nascimento" placeholder="Senha (DDMMAAAA)" 
+                   inputmode="numeric" maxlength="8" autocomplete="off">
+            <span class="toggle-password" id="eyeIcon" onclick="togglePass()">🙈</span>
+        </div>
+        
+        <button id="btnBuscar" onclick="buscar()">EXIBIR MINHA CREDENCIAL</button>
+        <div id="msgErro"></div>
     </div>
-    <button id="btnBuscar" onclick="buscar()">ACESSAR CREDENCIAL</button>
-  </div>
-  <div id="resultado"></div>
+
+    <div id="resultado"></div>
 </div>
 
 <script>
-// Registro do Service Worker (Essencial para o botão Instalar)
+// Registro do Service Worker para PWA
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('sw.js').then(function(registration) {
-      console.log('ServiceWorker registrado com sucesso: ', registration.scope);
-    }, function(err) {
-      console.log('Falha ao registrar ServiceWorker: ', err);
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('PWA: Ativo'))
+            .catch(err => console.error('PWA: Erro', err));
     });
-  });
 }
 
 function togglePass() {
-  const input = document.getElementById("nascimento");
-  const icon = document.getElementById("eyeIcon");
-  input.type = input.type === "password" ? "text" : "password";
-  icon.innerText = input.type === "password" ? "🙈" : "👁️";
+    const input = document.getElementById("nascimento");
+    const icon = document.getElementById("eyeIcon");
+    input.type = input.type === "password" ? "text" : "password";
+    icon.innerText = input.type === "password" ? "🙈" : "👁️";
 }
 
 function buscar() {
-  const formArea = document.getElementById("formArea");
-  const resultadoDiv = document.getElementById("resultado");
-  const btn = document.getElementById("btnBuscar");
-  
-  var cpf = document.getElementById("cpf").value.replace(/\D/g, '');
-  var nascimento = document.getElementById("nascimento").value.replace(/\D/g, '');
+    const formArea = document.getElementById("formArea");
+    const resultadoDiv = document.getElementById("resultado");
+    const msgErro = document.getElementById("msgErro");
+    const btn = document.getElementById("btnBuscar");
+    
+    const cpf = document.getElementById("cpf").value.replace(/\D/g, '');
+    const nascimento = document.getElementById("nascimento").value.replace(/\D/g, '');
 
-  if (cpf.length < 11 || nascimento.length !== 8) {
-    resultadoDiv.innerHTML = "<p class='erro'>⚠️ Dados incompletos!</p>";
-    return;
-  }
+    if (cpf.length < 11 || nascimento.length !== 8) {
+        msgErro.innerHTML = "<p class='erro'>⚠️ Preencha CPF e Senha corretamente.</p>";
+        return;
+    }
 
-  btn.disabled = true;
-  btn.innerText = "VERIFICANDO...";
+    msgErro.innerHTML = "";
+    btn.disabled = true;
+    btn.innerText = "AUTENTICANDO...";
 
-  var url = "https://script.google.com/macros/s/AKfycbzynN5FX9nQd2F9rYa0h9GOibyJ9nNmrrmcm3EJH0TrW6VAvInBwinNGW7E1bXxuY4/exec"
-            + "?cpf=" + cpf
-            + "&nascimento=" + nascimento;
+    // URL do seu Google Apps Script
+    const url = "https://script.google.com/macros/s/AKfycbzynN5FX9nQd2F9rYa0h9GOibyJ9nNmrrmcm3EJH0TrW6VAvInBwinNGW7E1bXxuY4/exec"
+              + "?cpf=" + cpf
+              + "&nascimento=" + nascimento;
 
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      btn.disabled = false;
-      btn.innerText = "ACESSAR CREDENCIAL";
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            btn.disabled = false;
+            btn.innerText = "EXIBIR MINHA CREDENCIAL";
 
-      if (data.status === "ok") {
-        formArea.classList.add("hidden");
-        const fotoFinal = data.foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+            if (data.status === "ok") {
+                formArea.classList.add("hidden");
+                const fotoPerfil = data.foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
 
-        resultadoDiv.innerHTML = `
-          <div class="credencial">
-            <img src="logo1.png" class="watermark">
-            <div class="foto-container">
-              <img src="${fotoFinal}" class="foto">
-            </div>
-            <h2 class="nome-funcionario">${data.nome}</h2>
-            <p class="cargo-funcionario">${data.cargo}</p>
-            <div class="id-numero">${data.identificador}</div>
-            <img src="logo1.png" class="logo-meio" alt="Auri Logo">
-            <p class="loja-nome">${data.loja.toLowerCase()}</p>
-            <div class="validade-discreta">Validade: ${data.data}</div>
-            <button class="btn-voltar" onclick="window.location.reload()">SAIR / VOLTAR</button>
-          </div>
-        `;
-      } else {
-        resultadoDiv.innerHTML = "<p class='erro'>❌ Não localizado!</p>";
-      }
-    })
-    .catch(err => {
-      btn.disabled = false;
-      resultadoDiv.innerHTML = "<p class='erro'>Erro de conexão.</p>";
-    });
+                resultadoDiv.innerHTML = `
+                    <div class="credencial">
+                        <img src="logo1.png" class="watermark">
+                        
+                        <div class="foto-container">
+                            <img src="${fotoPerfil}" class="foto">
+                        </div>
+
+                        <h2 class="nome-funcionario">${data.nome}</h2>
+                        <p class="cargo-funcionario">${data.cargo}</p>
+                        
+                        <div class="id-numero">${data.identificador}</div>
+                        
+                        <img src="logo1.png" class="logo-meio" alt="Logo">
+                        <p class="loja-nome">${data.loja}</p>
+                        
+                        <div class="validade-discreta">VALIDADE: ${data.data}</div>
+
+                        <div class="rodape-credencial">
+                            <span class="rodape-destaque">Presidente: Pr. Eliseu Moreira Silva</span>
+                            www.adpaz.com.br • adpazsg@gmail.com<br>
+                            CNPJ 15.837.402/0001-12<br>
+                            <strong>SEDE:</strong> Av. Jerônimo Câmara, 1080 – Lagoa Nova<br>
+                            59063-100 • Natal/RN • (84) 2010-4838
+                        </div>
+                    </div>
+                `;
+            } else {
+                msgErro.innerHTML = "<p class='erro'>❌ Colaborador não encontrado ou senha incorreta.</p>";
+            }
+        })
+        .catch(err => {
+            btn.disabled = false;
+            btn.innerText = "EXIBIR MINHA CREDENCIAL";
+            msgErro.innerHTML = "<p class='erro'>⚠️ Erro de rede. Tente novamente.</p>";
+        });
 }
 </script>
 
