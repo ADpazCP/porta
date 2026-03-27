@@ -1,7 +1,7 @@
 {
-  "name": "Portaria Digital Auri",
+  "name": "Carteira Digital",
   "short_name": "Credencial Adpaz",
-  "description": "Sistema de Credenciamento Portaria Digital Auri Autopeças",
+  "description": "Sistema de Credenciamento",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
