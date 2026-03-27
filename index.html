@@ -99,7 +99,7 @@
             pointer-events: none;
         }
 
-        .foto-container { position: relative; z-index: 1; margin-bottom: 10px; }
+        .foto-container { position: relative; z-index: 1; margin-bottom: 15px; }
         .foto {
             width: 160px;
             height: 160px;
@@ -110,19 +110,20 @@
         }
 
         .nome-funcionario {
-            margin: 10px 0 2px 0;
+            margin: 0;
             color: #001a33;
-            font-size: 22px;
+            font-size: 24px;
             text-transform: uppercase;
             font-weight: 800;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         .cargo-funcionario {
             color: var(--cinza-texto);
             font-weight: 700;
             font-size: 15px;
-            margin-bottom: 12px;
+            margin: 2px 0 15px 0;
+            text-transform: capitalize; /* Ajustado para Capitalizar */
         }
 
         .id-numero {
@@ -139,7 +140,13 @@
         }
 
         .logo-meio { width: 55px; margin: 10px auto 5px auto; display: block; }
-        .loja-nome { font-size: 17px; color: #001a33; font-weight: 600; margin: 0; text-transform: uppercase; }
+        .loja-nome { 
+            font-size: 17px; 
+            color: #001a33; 
+            font-weight: 600; 
+            margin: 0; 
+            text-transform: capitalize; /* Ajustado para Capitalizar */
+        }
 
         .validade-discreta {
             margin: 15px 0 10px 0;
@@ -148,7 +155,6 @@
             font-weight: bold;
         }
 
-        /* Rodapé Institucional */
         .rodape-credencial {
             margin-top: 15px;
             padding-top: 12px;
@@ -177,24 +183,18 @@
     <div id="formArea">
         <img src="auripaz.png" class="logo-topo" alt="Adpaz" onerror="this.src='https://via.placeholder.com/150x50?text=ADPAZ'">
         <h3 style="color: #003366; margin-top: 0;">Portal do Colaborador</h3>
-        
         <input type="tel" id="cpf" placeholder="CPF (somente números)" maxlength="11">
-        
         <div class="password-container">
-            <input type="password" id="nascimento" placeholder="Senha (DDMMAAAA)" 
-                   inputmode="numeric" maxlength="8" autocomplete="off">
+            <input type="password" id="nascimento" placeholder="Senha (DDMMAAAA)" inputmode="numeric" maxlength="8" autocomplete="off">
             <span class="toggle-password" id="eyeIcon" onclick="togglePass()">🙈</span>
         </div>
-        
         <button id="btnBuscar" onclick="buscar()">EXIBIR MINHA CREDENCIAL</button>
         <div id="msgErro"></div>
     </div>
-
     <div id="resultado"></div>
 </div>
 
 <script>
-// Registro do Service Worker para PWA
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
@@ -228,7 +228,6 @@ function buscar() {
     btn.disabled = true;
     btn.innerText = "AUTENTICANDO...";
 
-    // URL do seu Google Apps Script
     const url = "https://script.google.com/macros/s/AKfycbzynN5FX9nQd2F9rYa0h9GOibyJ9nNmrrmcm3EJH0TrW6VAvInBwinNGW7E1bXxuY4/exec"
               + "?cpf=" + cpf
               + "&nascimento=" + nascimento;
@@ -243,41 +242,38 @@ function buscar() {
                 formArea.classList.add("hidden");
                 const fotoPerfil = data.foto || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
 
+                // Usando toLowerCase() antes da renderização para garantir que o capitalize do CSS funcione bem
+                const cargoFormatado = data.cargo.toLowerCase();
+                const lojaFormatada = data.loja.toLowerCase();
+
                 resultadoDiv.innerHTML = `
                     <div class="credencial">
                         <img src="logo1.png" class="watermark">
-                        
                         <div class="foto-container">
                             <img src="${fotoPerfil}" class="foto">
                         </div>
-
                         <h2 class="nome-funcionario">${data.nome}</h2>
-                        <p class="cargo-funcionario">${data.cargo}</p>
-                        
+                        <p class="cargo-funcionario">${cargoFormatado}</p>
                         <div class="id-numero">${data.identificador}</div>
-                        
                         <img src="logo1.png" class="logo-meio" alt="Logo">
-                        <p class="loja-nome">${data.loja}</p>
-                        
+                        <p class="loja-nome">${lojaFormatada}</p>
                         <div class="validade-discreta">VALIDADE: ${data.data}</div>
-
                         <div class="rodape-credencial">
                             <span class="rodape-destaque">Presidente: Pr. Eliseu Moreira Silva</span>
-                            www.adpaz.com.br • adpazsg@gmail.com<br>
-                            CNPJ 15.837.402/0001-12<br>
                             <strong>SEDE:</strong> Av. Jerônimo Câmara, 1080 – Lagoa Nova<br>
-                            59063-100 • Natal/RN • (84) 2010-4838
+                            59063-100 • Natal/RN • (84) 2010-4838<br>
+                            CNPJ 15.837.402/0001-12
                         </div>
                     </div>
                 `;
             } else {
-                msgErro.innerHTML = "<p class='erro'>❌ Colaborador não encontrado ou senha incorreta.</p>";
+                msgErro.innerHTML = "<p class='erro'>❌ Dados não localizados.</p>";
             }
         })
         .catch(err => {
             btn.disabled = false;
             btn.innerText = "EXIBIR MINHA CREDENCIAL";
-            msgErro.innerHTML = "<p class='erro'>⚠️ Erro de rede. Tente novamente.</p>";
+            msgErro.innerHTML = "<p class='erro'>⚠️ Erro de conexão.</p>";
         });
 }
 </script>
